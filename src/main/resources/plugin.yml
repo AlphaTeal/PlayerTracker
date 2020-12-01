@@ -1,0 +1,10 @@
+name: PlayerTracker
+author: alphateal
+main: net.alphateal.playerTracker.PlayerTracker
+version: 0.1
+api-version: 1.13
+commands:
+  tracker:
+    description: Use it to track your friends!
+    usage: /tracker create <username>
+    permission: playertracker.tracker
