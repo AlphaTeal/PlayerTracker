@@ -4,6 +4,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.Command;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.CompassMeta;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.entity.Player;
 import org.bukkit.Bukkit;
@@ -55,18 +56,29 @@ public class Tracker implements CommandExecutor {
             
             ItemStack tracker = new ItemStack(Material.COMPASS);
             tracker.setAmount(1);
+            CompassMeta trackerMeta = (CompassMeta)tracker.getItemMeta();
+            trackerMeta.setDisplayName(huntee.getDisplayName() + " Tracker");
+            trackerMeta.setLodestoneTracked(true);
+            trackerMeta.setLodestone(hunteeLocation); //Might need to schedule
+
+            tracker.setItemMeta(trackerMeta);
+
             hunter.getInventory().addItem(tracker);
 
-            sender.sendMessage("Issuing a tracker for " + args[1]);
+            sender.sendMessage("Issuing a tracker for " + huntee.getDisplayName());
             sender.sendMessage("Happy hunting!");
 
             Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable() {
                 @Override
                 public void run() {
+                    sender.sendMessage("Refreshing " + huntee.getDisplayName() + " tracker...");
                     Location hunteeLocation = huntee.getLocation();
-                    hunter.setCompassTarget(hunteeLocation);
+                    trackerMeta.setLodestoneTracked(true);
+                    trackerMeta.setLodestone(hunteeLocation);
+                    trackerMeta.setDisplayName("DEBUG");
+                    tracker.setItemMeta(trackerMeta);
                 }
-            }, 0L, 20L);
+            }, 0L, 10L);
         }
 
         return true;
