@@ -7,6 +7,7 @@ public class PlayerTracker extends JavaPlugin {
     @Override
     public void onEnable() {
         this.getCommand("tracker").setExecutor(new Tracker(this));
+        this.getCommand("tracker").setTabCompleter(new TrackerTabCompleter());
     }
 
     @Override

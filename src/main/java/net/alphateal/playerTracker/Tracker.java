@@ -63,6 +63,9 @@ public class Tracker implements CommandExecutor {
             sender.sendMessage("Issuing a tracker for " + huntee.getDisplayName());
             sender.sendMessage("Happy hunting!");
 
+            // TODO: Need a way to kill this task when appropriate
+            // When hunter or huntee disconnect
+            // When compass is destroyed
             Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable() {
                 @Override
                 public void run() {
@@ -76,6 +79,10 @@ public class Tracker implements CommandExecutor {
                         if (itemName.contains("Tracker")) {
                             String hunteeName = itemName.split(" ")[0];
                             Player huntee = Bukkit.getPlayer(hunteeName);
+                            if (huntee == null) {
+                                hunterInv.removeItem(compass);
+                                continue;
+                            }
                             newMeta.setLodestoneTracked(false);
                             newMeta.setLodestone(huntee.getLocation());
                             compass.setItemMeta(newMeta);
