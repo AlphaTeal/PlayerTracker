@@ -75,6 +75,7 @@ public class Tracker implements CommandExecutor {
                             Player huntee = Bukkit.getPlayer(hunteeName);
                             if (huntee == null) {
                                 hunterInv.removeItem(compass);
+                                Thread.currentThread().interrupt();
                                 continue;
                             }
                             newMeta.setLodestoneTracked(false);
